@@ -48,7 +48,11 @@
       let fileInput = document.getElementById("fileInput");
       let uploadForm = document.getElementById("uploadForm");
 
-      dropZone.addEventListener("click", function () {
+      dropZone.addEventListener("click", function (event) {
+        if (event.target.closest("form")) {
+          return;
+        }
+
         fileInput.click();
       });
 
