@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 5100
 
-CMD ["python", "app.py"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5100} app:app"]
