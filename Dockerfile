@@ -1,17 +1,19 @@
-FROM python:3.9
+FROM python:3.9-slim
 
-# download this https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx
-# copy model to avoid unnecessary download
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV U2NET_HOME=/root/.u2net
+ENV MODEL_CHECKSUM_DISABLED=1
+
+RUN mkdir -p /root/.u2net
+
 COPY u2net.onnx /root/.u2net/u2net.onnx
 
 WORKDIR /app
 
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-EXPOSE 5100
 
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5100} app:app"]
